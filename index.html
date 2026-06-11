@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Link to our external CSS file -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main role="main" aria-label="To-Do Application">
+      <header class="app-header">
+        <h1>My Tasks</h1>
+        <!-- aria-live: screen readers announce changes here automatically -->
+        <p class="task-count" id="task-count" aria-live="polite">
+          0 tasks left
+        </p>
+      </header>
+
+      <section>
+        <!-- INPUT AREA: user types here to add a new task -->
+        <div class="input-area">
+          <input
+            type="text"
+            id="task-input"
+            placeholder="What needs to be done?"
+            aria-label="New task input"
+            autocomplete="off"
+            maxlength="200"
+          />
+          <button id="add-btn" aria-label="Add task">+ Add</button>
+        </div>
+
+        <!-- FILTER TABS: All / Active / Completed -->
+        <!-- data-filter is read by JS to know which filter to apply -->
+        <nav class="filters" aria-label="Filter tasks">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="active">Active</button>
+          <button class="filter-btn" data-filter="completed">Completed</button>
+        </nav>
+
+        <!-- TASK LIST: JavaScript dynamically adds <li> elements here -->
+        <ul id="task-list" aria-label="Task list"></ul>
+
+        <!-- FOOTER: shows stats and a button to remove completed tasks -->
+        <footer class="app-footer">
+          <span class="footer-stats" id="footer-stats"></span>
+          <button
+            id="clear-completed-btn"
+            aria-label="Clear completed tasks"
+            hidden
+          >
+            Clear completed
+          </button>
+        </footer>
+      </section>
+    </main>
+
+    <!-- Link to our external JavaScript file -->
+    <!-- Placed at the bottom so the HTML loads before JS runs -->
+    <script src="app.js"></script>
+  </body>
+</html>
