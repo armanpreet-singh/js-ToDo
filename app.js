@@ -1,3 +1,5 @@
+import { generateTaskId, MAX_TASK_LENGTH, normalizeTasks } from "./task-utils.js";
+
 const STORAGE_KEY = "tasks";
 
 // Ignore malformed or incompatible saved data instead of crashing the app.
@@ -7,17 +9,7 @@ function loadTasks() {
     if (!storedTasks) return [];
 
     const parsedTasks = JSON.parse(storedTasks);
-    if (!Array.isArray(parsedTasks)) return [];
-
-    return parsedTasks.filter(
-      (task) =>
-        task &&
-        typeof task === "object" &&
-        !Array.isArray(task) &&
-        Number.isSafeInteger(task.id) &&
-        typeof task.text === "string" &&
-        typeof task.completed === "boolean"
-    );
+    return normalizeTasks(parsedTasks);
   } catch (error) {
     console.warn("Could not load saved tasks. Starting with an empty list.", error);
     return [];
@@ -46,7 +38,7 @@ const updateState = () => {
   render();
 };
 
-const generateId = () => Date.now();
+const generateId = () => generateTaskId(tasks);
 
 const findTask = (id) => tasks.find((task) => task.id === id);
 
@@ -110,7 +102,7 @@ function toggleTask(id) {
 }
 
 function saveEdit(id, newText) {
-  const trimmed = newText.trim();
+  const trimmed = newText.trim().slice(0, MAX_TASK_LENGTH);
 
   if (!trimmed) {
     deleteTask(id);
@@ -205,8 +197,8 @@ function render() {
         </label>
         <span class="task-text">${escapeHtml(task.text)}</span>
         <div class="task-actions">
-          <button class="action-btn edit-btn" title="Edit task">&#9998;</button>
-          <button class="action-btn delete-btn" title="Delete task">&#128465;</button>
+          <button class="action-btn edit-btn" type="button" title="Edit task" aria-label="Edit task">&#9998;</button>
+          <button class="action-btn delete-btn" type="button" title="Delete task" aria-label="Delete task">&#128465;</button>
         </div>
       `;
 
