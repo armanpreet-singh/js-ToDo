@@ -1,6 +1,30 @@
 const STORAGE_KEY = "tasks";
 
-let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+// Ignore malformed or incompatible saved data instead of crashing the app.
+function loadTasks() {
+  try {
+    const storedTasks = localStorage.getItem(STORAGE_KEY);
+    if (!storedTasks) return [];
+
+    const parsedTasks = JSON.parse(storedTasks);
+    if (!Array.isArray(parsedTasks)) return [];
+
+    return parsedTasks.filter(
+      (task) =>
+        task &&
+        typeof task === "object" &&
+        !Array.isArray(task) &&
+        Number.isSafeInteger(task.id) &&
+        typeof task.text === "string" &&
+        typeof task.completed === "boolean"
+    );
+  } catch (error) {
+    console.warn("Could not load saved tasks. Starting with an empty list.", error);
+    return [];
+  }
+}
+
+let tasks = loadTasks();
 let currentFilter = "all";
 
 const elements = {
