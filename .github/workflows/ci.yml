@@ -1,0 +1,33 @@
+name: To-Do App Checks
+
+on:
+  pull_request:
+    paths:
+      - "app.js"
+      - "index.html"
+      - "style.css"
+      - "task-utils.js"
+      - "tests/**"
+      - "package.json"
+      - ".github/workflows/**"
+  push:
+    branches:
+      - main
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check JavaScript syntax
+        run: npm run check
+
+      - name: Run task utility regression tests
+        run: npm test
