@@ -1,0 +1,9 @@
+{
+  "name": "js-todo-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check app.js && node --check task-utils.js && node --check tests/task-utils.test.js",
+    "test": "node --test"
+  }
+}
